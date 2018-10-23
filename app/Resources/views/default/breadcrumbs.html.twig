@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-12">
+        <ol class="breadcrumb">
+            {% if breadcrumb is defined and breadcrumb is not null and breadcrumb is not empty %}
+                <li><a href="#">Accueil</a></li>
+                {% for element in breadcrumb %}
+                    {% if loop.last %}
+                        <li class="active">{{ element.name }}</li>
+                    {% else %}
+                        <li><a href="{{ element.link }}">{{ element.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li class="active">Accueil</li>
+            {% endif %}
+        </ol>
+    </div>
+</div>

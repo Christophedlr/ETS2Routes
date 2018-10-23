@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-3">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" width="50%">
+    </div>
+    <div class="col-md-5 cold-md-offset-4">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="#">Accueil</a>
+                        </li>
+                        <li>
+                            <a href="#">FAQ</a>
+                        </li>
+                        <li>
+                            <a href="#">Forum</a>
+                        </li>
+                        {% if app.user %}
+                            <li>
+                                <a href="#">Profil</a>
+                            </li>
+                            <li>
+                                <a href="#">Déconnexion</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="#">Connexion</a>
+                            </li>
+                            <li>
+                                <a href="#">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
