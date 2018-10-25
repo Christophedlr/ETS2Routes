@@ -3,15 +3,16 @@
 namespace UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/user/login")
      */
     public function indexAction()
     {
-        return $this->render('UserBundle:Default:index.html.twig');
+        return new Response('');
     }
 }
