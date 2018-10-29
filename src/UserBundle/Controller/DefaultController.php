@@ -20,12 +20,18 @@
 
 namespace UserBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use UserBundle\Entity\User;
+use UserBundle\Forms\RegisterType;
 
 class DefaultController extends Controller
 {
@@ -54,5 +60,33 @@ class DefaultController extends Controller
     public function logout()
     {
         throw new \Exception("Don't forget to activate logout in security.yaml");
+    }
+
+    /**
+     * @Route("/register", name="user_register")
+     * @Security("not has_role('ROLE_USER')")
+     * @param Request $request
+     * @return Response
+     */
+    public function registerAction(Request $request)
+    {
+        $user = new User();
+        $form = $this->createForm(RegisterType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPlainPassword()));
+            $user->eraseCredentials();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('user/register.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

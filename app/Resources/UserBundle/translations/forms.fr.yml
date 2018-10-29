@@ -1,0 +1,6 @@
+register:
+    username:         "Nom d'utilisateur"
+    password:         "Mot de passe"
+    repeat_password:  "Répéter le mot de passe"
+    mail:             "E-mail"
+    submit:           "S'inscrire"
