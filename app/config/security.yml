@@ -15,7 +15,7 @@ security:
         database:
             entity:
                 class: UserBundle:User
-                property: login
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -27,10 +27,8 @@ security:
             anonymous: ~
             logout_on_user_change: true
             provider: database
-            # activate different ways to authenticate
-
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            logout:
+                path: user_logout
+            form_login:
+                login_path: user_login
+                check_path: user_login

@@ -25,9 +25,9 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="login", type="string", length=50, unique=true)
+     * @ORM\Column(name="username", type="string", length=50, unique=true)
      */
-    private $login;
+    private $username;
 
     /**
      * @var string
@@ -96,9 +96,9 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setLogin($login)
+    public function setUsername($login)
     {
-        $this->login = $login;
+        $this->username = $login;
 
         return $this;
     }
@@ -108,9 +108,9 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getLogin()
+    public function getUsername()
     {
-        return $this->login;
+        return $this->username;
     }
 
     /**
@@ -277,9 +277,9 @@ class User implements UserInterface, \Serializable
      */
     public function serialize()
     {
-        return $this->serialize([
+        return serialize([
             $this->id,
-            $this->login,
+            $this->username,
             $this->password,
         ]);
     }
@@ -297,7 +297,7 @@ class User implements UserInterface, \Serializable
     {
         list(
             $this->id,
-            $this->login,
+            $this->username,
             $this->password,
             ) = unserialize($serialized, ['allowed_classes' => false]);
     }
@@ -331,16 +331,6 @@ class User implements UserInterface, \Serializable
     public function getSalt()
     {
         return null;
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return $this->login;
     }
 
     /**

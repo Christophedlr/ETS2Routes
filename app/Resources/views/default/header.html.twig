@@ -21,11 +21,11 @@
                                 <a href="#">Profil</a>
                             </li>
                             <li>
-                                <a href="#">Déconnexion</a>
+                                <a href="{{ path('user_logout') }}">Déconnexion</a>
                             </li>
                         {% else %}
                             <li>
-                                <a href="#">Connexion</a>
+                                <a href="{{ path('user_login') }}">Connexion</a>
                             </li>
                             <li>
                                 <a href="#">Inscription</a>
