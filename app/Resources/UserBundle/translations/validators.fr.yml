@@ -1,0 +1,3 @@
+register:
+    error:
+        repeated_password: "Les mots de passe doivent correspondre"

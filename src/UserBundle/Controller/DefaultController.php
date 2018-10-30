@@ -48,6 +48,10 @@ class DefaultController extends Controller
         $authenticationUtils = new AuthenticationUtils($requestStak);
         $error = $authenticationUtils->getLastAuthenticationError();
 
+        if ($error) {
+            $this->addFlash('danger', $this->get('translator')->trans('login.invalid_credentials'));
+        }
+
         return $this->render('user/login.html.twig', [
             'error' => $error,
         ]);
@@ -78,11 +82,19 @@ class DefaultController extends Controller
             $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPlainPassword()));
             $user->eraseCredentials();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $existUser = $this->getDoctrine()->getRepository(User::class)->findBy(['username' => $user->getUsername()]);
 
-            return $this->redirectToRoute('homepage');
+            if (!$existUser) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', $this->get('translator')->trans('register.success'));
+
+                return $this->redirectToRoute('homepage');
+            }
+
+            $this->addFlash('danger', $this->get('translator')->trans('register.error'));
         }
 
         return $this->render('user/register.html.twig', [

@@ -1,0 +1,6 @@
+register:
+    success:              "Votre inscription est bien effective"
+    error:                "L'utilisateur existe déjà"
+
+login:
+    invalid_credentials:  "Vos identifiants sont invalides"

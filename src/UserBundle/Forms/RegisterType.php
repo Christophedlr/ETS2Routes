@@ -41,6 +41,7 @@ class RegisterType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'register.password'],
                 'second_options' => ['label' => 'register.repeat_password'],
+                'invalid_message' => 'register.error.repeated_password'
             ])
             ->add('mail', EmailType::class, ['label' => 'register.mail'])
             ->add('submit', SubmitType::class, [

@@ -11,10 +11,6 @@
                 </div>
 
                 <div class="panel-body">
-                    {% if error %}
-                        <div class="text-center error">Vos identifiants sont invalides</div>
-                    {% endif %}
-
                     <form action="{{ path('user_login') }}" method="post">
                         <div class="form-group">
                             <label for="login">Nom d'utilisateur</label>
