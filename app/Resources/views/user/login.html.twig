@@ -2,6 +2,11 @@
 
 {% block title %}Connexion utilisateur{% endblock %}
 
+{% set breadcrumb = [
+    {"name": "Utilisateur", "link": ""},
+    {"name": "Connexion", "link": path('user_login')}
+] %}
+
 {% block body %}
     <div class="row">
         <div class="col-md-12">

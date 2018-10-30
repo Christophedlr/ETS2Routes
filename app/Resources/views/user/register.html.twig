@@ -2,6 +2,11 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% set breadcrumb = [
+    {"name": "Utilisateur", "link": ""},
+    {"name": "Inscription", "link": path('user_register')}
+] %}
+
 {% block body %}
     <div class="row">
         <div class="col-md-12">

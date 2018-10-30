@@ -1,3 +1,7 @@
 register:
     error:
         repeated_password: "Les mots de passe doivent correspondre"
+
+profile:
+    error:
+        repeat_mail:       "Les e-mail doivent correspondre"

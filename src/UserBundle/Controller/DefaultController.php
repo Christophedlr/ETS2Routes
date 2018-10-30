@@ -31,6 +31,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use UserBundle\Entity\User;
+use UserBundle\Forms\ProfileMailType;
+use UserBundle\Forms\ProfilePasswordType;
 use UserBundle\Forms\RegisterType;
 
 class DefaultController extends Controller
@@ -99,6 +101,60 @@ class DefaultController extends Controller
 
         return $this->render('user/register.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/profile", name="user_profile")
+     * @Security("has_role('ROLE_USER')")
+     * @param Request $request
+     * @return Response
+     */
+    public function profileAction(Request $request)
+    {
+        $user = $this->getUser();
+        $passwordForm = $this->createForm(ProfilePasswordType::class);
+        $passwordForm->handleRequest($request);
+
+        $mailForm = $this->createForm(ProfileMailType::class);
+        $mailForm->handleRequest($request);
+
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+            if ($this->get('security.password_encoder')
+                ->isPasswordValid($user, $passwordForm->getData()['oldPassword'])) {
+                $user->setPassword(
+                    $this->get('security.password_encoder')->encodePassword($user, $passwordForm->getData()['password'])
+                );
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', $this->get('translator')->trans('profile.password.success'));
+
+                return $this->redirectToRoute('user_logout');
+            } else {
+                $this->addFlash('danger', $this->get('translator')->trans('profile.password.error'));
+            }
+        } elseif ($mailForm->isSubmitted() && $mailForm->isValid()) {
+            if ($user->getMail() === $mailForm->getData()['oldMail']) {
+                $user->setMail($mailForm->getData()['mail']);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', $this->get('translator')->trans('profile.mail.success'));
+
+                return $this->redirectToRoute('user_logout');
+            } else {
+                $this->addFlash('danger', $this->get('translator')->trans('profile.mail.error'));
+            }
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'form_password' => $passwordForm->createView(),
+            'form_mail' => $mailForm->createView(),
         ]);
     }
 }

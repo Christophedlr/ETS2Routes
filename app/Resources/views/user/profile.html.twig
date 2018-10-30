@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil{% endblock %}
+
+{% set breadcrumb = [
+    {"name": "Utilisateur", "link": ""},
+    {"name": "Profil", "link": path('user_profile')}
+] %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Changement du mot de passe</div>
+                <div class="panel-body">{{ form(form_password) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Changement d'adresse e-mail</div>
+                <div class="panel-body">{{ form(form_mail) }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

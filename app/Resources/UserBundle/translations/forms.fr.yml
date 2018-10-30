@@ -4,3 +4,12 @@ register:
     repeat_password:  "Répéter le mot de passe"
     mail:             "E-mail"
     submit:           "S'inscrire"
+
+profile:
+    old_password:     "Ancien mot de passe"
+    password:         "Nouveau mot de passe"
+    repeat_password:  "Répéter le nouveau mot de passe"
+    old_mail:         "Ancien e-mail"
+    mail:             "Nouvel e-mail"
+    repeat_mail:      "Répéter le nouvel e-mail"
+    submit:           "Modifier"

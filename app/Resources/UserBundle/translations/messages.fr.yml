@@ -4,3 +4,12 @@ register:
 
 login:
     invalid_credentials:  "Vos identifiants sont invalides"
+
+profile:
+    password:
+        success:          "Votre mot de passe a bien été modifié, par mesure de sécurité nous vous avons déconnecté"
+        error:            "L'ancien mot de passe ne correspond pas"
+
+    mail:
+        success:          "Votre adresse e-mail a bien été modifiée, par mesure de sécurité nous vous avons déconnecté"
+        error:            "L'ancienne adresse e-mail ne correspond pas"
