@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% set breadcrumb = [
+    {"name": "Utilisateur", "link": path('user_login')},
+    {"name": "Validation", "link": path('user_reset')}
+] %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">{{ 'reset.mail'|trans({}, "forms") }}</div>
+                <div class="panel-body">
+                    <form action="{{ path('user_reset') }}" method="post" name="mail">
+                        <div class="form-group">
+                            <label for="mail">{{ 'register.mail'|trans({}, 'forms') }}</label>
+                            <input type="email" name="mail[mail]" value="" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ 'reset.submit'|trans({}, 'forms') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -34,6 +34,7 @@ use UserBundle\Entity\User;
 use UserBundle\Forms\ProfileMailType;
 use UserBundle\Forms\ProfilePasswordType;
 use UserBundle\Forms\RegisterType;
+use UserBundle\Forms\ResetType;
 
 class DefaultController extends Controller
 {
@@ -156,5 +157,106 @@ class DefaultController extends Controller
             'form_password' => $passwordForm->createView(),
             'form_mail' => $mailForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/reset", name="user_reset")
+     * @Security("not has_role('ROLE_USER')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function resetAction(Request $request)
+    {
+        $mail = $request->request->get('mail');
+        $mailer = $this->get('mailer');
+
+        if ($mail) {
+            $user = $this->getDoctrine()->getRepository(User::class)->findBy(['mail' => $mail])[0];
+
+            if (!$user) {
+                $this->addFlash('danger', $this->get('translator')->trans('reset.user.notfound', [], 'forms'));
+            } else {
+                $code = $this->generatePassword();
+                $message = new \Swift_Message($this->get('translator')->trans('reset.object.reinit', [], 'forms'));
+                $message
+                    ->setFrom('contact@ets2routes.com')
+                    ->setTo($user->getMail())
+                    ->setBody(
+                        $this->renderView('user/mails/password_validation.html.twig', [
+                            'user' => $user,
+                            'code' => $code
+                        ])
+                        ,'text/html')
+                ;
+
+                if ($mailer->send($message) !== 0) {
+                    $user->setValidationCode($code);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+                    $this->addFlash('success', $this->get('translator')->trans('reset.send.success', [], 'forms'));
+                    return $this->redirectToRoute('homepage');
+                } else {
+                    $this->addFlash('danger', $this->get('translator')->trans('reset.send.failure', [], 'forms'));
+                }
+            }
+        }
+
+        return $this->render('user/reset.html.twig', [
+            'mail' => $mail,
+        ]);
+    }
+
+    /**
+     * @Route("/reset/password", name="user_reset_password")
+     * @Security("not has_role('ROLE_USER')")
+     */
+    public function resetPasswordAction(Request $request)
+    {
+        $password = $request->request->get('password');
+        $mailer = $this->get('mailer');
+
+        if ($password) {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getDoctrine()->getRepository(User::class)->findBy(['validationCode' => $password['code'], 'mail' => $password['mail']])[0];
+
+            if ($user) {
+                $passwd = $this->generatePassword();
+                $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $passwd));
+                $user->setValidationCode(null);
+
+                $message = new \Swift_Message($this->get('translator')->trans('reset.object.new', [], 'forms'));
+                $message
+                    ->setFrom('contact@ets2routes.com')
+                    ->setTo($user->getMail())
+                    ->setBody(
+                        $this->renderView('user/mails/new_password.html.twig', [
+                            'user' => $user,
+                            'password' => $passwd
+                        ])
+                        ,'text/html')
+                ;
+                if ($mailer->send($message) !== 0) {
+                    $em->persist($user);
+                    $em->flush();
+
+                    $this->addFlash('success', $this->get('translator')->trans('reset.password.success', [], 'forms'));
+                    return $this->redirectToRoute('homepage');
+                } else {
+                    $this->addFlash('danger', $this->get('translator')->trans('reset.password.critical', [], 'forms'));
+                }
+            } else {
+                $this->addFlash('danger', $this->get('translator')->trans('reset.password.failure', [], 'forms'));
+            }
+        }
+
+        return $this->render('user/reset_password.html.twig', [
+        ]);
+    }
+
+    public function generatePassword()
+    {
+        return bin2hex(openssl_random_pseudo_bytes(8));
     }
 }

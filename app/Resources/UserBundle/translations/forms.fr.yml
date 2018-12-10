@@ -13,3 +13,20 @@ profile:
     mail:             "Nouvel e-mail"
     repeat_mail:      "Répéter le nouvel e-mail"
     submit:           "Modifier"
+
+reset:
+    validation:       "Code de validation"
+    submit:           "Valider"
+    mail:             "Réinitialisation du mot de passe"
+    object:
+      reinit:         "Réintialisation du mot de passe"
+      new:            "Nouveau mot de passe"
+    send:
+        success:      "Votre code de validation a été envoyé par e-mail"
+        failure:      "Une erreur est survenue, merci de retenter plus tard"
+    password:
+        success:      "Votre nouveau mot de passe vous a été envoyé par e-mail"
+        failure:      "L'e-mail et le code de validation ne correspondent pas"
+        critical:     "Problème avec le système, retenter plus tard"
+    user:
+        notfound:     "L'utilisateur associé à cette adresse e-mail n'a pas été trouvé"
