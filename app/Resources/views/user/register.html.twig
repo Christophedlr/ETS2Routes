@@ -7,12 +7,33 @@
     {"name": "Inscription", "link": path('user_register')}
 ] %}
 
+{% block javascripts %}
+    <script src="https://authedmine.com/lib/captcha.min.js" async></script>
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">Inscription</div>
-                <div class="panel-body">{{ form(form) }}</div>
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                        {{ form_errors(form) }}
+
+                        {{ form_label(form.username) }}
+                        {{ form_errors(form.username) }}
+                        {{ form_widget(form.username) }}<br>
+
+                        {{ form_errors(form.plainPassword) }}
+                        {{ form_widget(form.plainPassword) }}
+
+                        {{ form_label(form.mail) }}
+                        {{ form_errors(form.mail) }}
+                        {{ form_widget(form.mail) }}<br>
+
+                        <div class="coinhive-captcha" data-hashes="256" data-key="1FMQcr7D3wGXVDcu7oCw5AVP9Qnbugam" data-whiltelabel="false" data-disable-elements="button[type=submit]">Loading captcha</div>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
     </div>
