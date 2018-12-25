@@ -72,6 +72,7 @@ class ChangeUserCommand extends ContainerAwareCommand
         $io->note('You will change the '.$username.' user');
 
         $question = new Question("\n<info>Enter the new password (empty for not changed)</info>: \n");
+        $question->setHidden(true);
         $password = trim($helper->ask($input, $output, $question));
 
         $question = new Question("\n<info>Enter the new mail (empty for not changed):</info> \n");
@@ -84,7 +85,6 @@ class ChangeUserCommand extends ContainerAwareCommand
         $validationCode = trim($helper->ask($input, $output, $question));
 
         if (!empty($password)) {
-            var_dump('test');
             $user->setPassword($this->getContainer()->get('security.password_encoder')->encodePassword($user, $password));
             $persist = true;
         }
