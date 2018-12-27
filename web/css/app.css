@@ -16,6 +16,24 @@
  * or the use or other dealings in the Software.
  */
 
+/* Table */
+th {
+    text-align: center;
+}
+
+/* Glyphicon */
+a.glyphicon:hover {
+    text-decoration: none;
+}
+
+.glyphicon-pencil {
+    color: #ff7d33;
+}
+
+.glyphicon-remove {
+    color: red;
+}
+
 .error {
     color: #FF0000;
 }

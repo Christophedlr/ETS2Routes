@@ -1,0 +1,8 @@
+category:
+    create:
+        name: "Nom de la catégorie :"
+        description: "Description de la catégorie (optionnel) :"
+        submit: "Créer"
+
+    change:
+        submit: "Modifier"

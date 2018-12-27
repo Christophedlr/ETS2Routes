@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'category.create.title'|trans }}{% endblock %}
+
+{% set breadcrumb = [
+    {"name": "crumb.admin"|trans, "link": ""},
+    {"name": "crumb.news"|trans, "link": ""},
+    {"name": "crumb.categories"|trans, "link": path('admin_news_category')},
+    {"name": "crumb.create"|trans, "link": path('admin_news_category_create')}
+] %}
+
+{% block body %}
+    {{ form(form) }}
+{% endblock %}

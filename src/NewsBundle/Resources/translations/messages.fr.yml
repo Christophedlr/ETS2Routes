@@ -1,0 +1,29 @@
+category:
+    create:
+        title: "Création d'une catégorie"
+        error: "Cette catégorie existe déjà"
+        success: "La catégorie a bien été créée"
+    display:
+        page_title: "Listing des catégories"
+        heading: "Liste des catégories"
+        id: "ID"
+        name: "Titre"
+        action: "Action"
+
+        button:
+            add: "Ajouter"
+    change:
+        not_found: "La catégorie <b>%id%</b> n'existe pas"
+        success: "La catégorie <b>%id%</b> a bien été modifiée"
+    delete:
+        modal_title: "Suppression d'une catégorie"
+        modal_body: "Voulez-vous vraiment supprimer cette catégorie ?"
+        modal_cancel: "Annuler"
+        modal_ok: "Valider"
+        success: "La catégorie <b>%id%</b> a bien été supprimée"
+
+crumb:
+  admin: "Administration"
+  news: "News"
+  categories: "Catégories"
+  create: "Création"
