@@ -4,6 +4,25 @@ news:
         error: "Cette news existe déjà"
         success: "La news a bien été ajoutée"
 
+    display:
+        page_title: "Listing des news"
+        heading: "Liste des news"
+        id: "ID"
+        name: "Titre"
+        action: "Action"
+        cat: "Catégorie"
+
+    change:
+        not_found: "La news <b>%id%</b> n'existe pas"
+        success: "La news <b>%id%</b> a bien été modifiée"
+
+    delete:
+        modal_title: "Suppression d'une news"
+        modal_body: "Voulez-vous vraiment supprimer cette news ?"
+        modal_cancel: "Annuler"
+        modal_ok: "Valider"
+        success: "La news <b>%id%</b> a bien été supprimée"
+
 category:
     create:
         title: "Création d'une catégorie"

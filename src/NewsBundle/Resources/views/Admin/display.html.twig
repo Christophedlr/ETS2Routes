@@ -1,0 +1,70 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "news.display.page_title"|trans }}{% endblock %}
+
+{% set breadcrumb = [
+    {"name": "crumb.admin"|trans, "link": ""},
+    {"name": "crumb.news"|trans, "link": path('admin_news')}
+] %}
+
+{% block body %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">{{ "news.display.heading"|trans }}</div>
+        <div class="panel-body">
+            <p class="text-center">
+                <a href="{{ path('admin_news_create') }}" class="btn btn-primary">
+                    {{ "category.display.button.add"|trans }}
+                </a>
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="col-md-1">{{ 'news.display.id'|trans }}</th>
+                        <th class="col-md-5">{{ 'news.display.cat'|trans }}</th>
+                        <th class="col-md-5">{{ 'news.display.name'|trans }}</th>
+                        <th class="col-md-1">{{ 'news.display.action'|trans }}</th>
+                    </tr>
+
+                    {% for new in news %}
+                        <tr>
+                            <td class="text-center col-md-1">{{ new.id }}</td>
+                            <td class="col-md-5">{{ new.category.name }}</td>
+                            <td class="col-md-5">{{ new.title }}</td>
+                            <td class="col-md-1">
+                                <a href="{{ path('admin_news_change', {'id':new.id}) }}"
+                                   class="glyphicon glyphicon-pencil"></a>
+                                <a href="" class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#delete-{{ new.id }}"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            {% for new in news %}
+                <div class="modal" role="dialog" id="delete-{{ new.id }}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                                <h4 class="modal-title">{{ 'news.delete.modal_title'|trans }}</h4>
+                            </div>
+
+                            <div class="modal-body">{{ 'news.delete.modal_body'|trans }}</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    {{ 'news.delete.modal_cancel'|trans }}
+                                </button>
+                                <a  href="{{ path('admin_news_category_delete', {'id': new.id}) }}" class="btn btn-primary">
+                                    {{ 'news.delete.modal_ok'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -22,7 +22,9 @@ namespace NewsBundle\Controller;
 
 use NewsBundle\Entity\News;
 use NewsBundle\Form\NewsType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,6 +37,25 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends Controller
 {
     /**
+     * Display news
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/admin/news", name="admin_news")
+     */
+    public function displayAction()
+    {
+        $repos = $this->getDoctrine()->getRepository(News::class);
+        $news = $repos->findAll();
+
+        return $this->render('@News/Admin/display.html.twig', [
+            'news' => $news
+        ]);
+    }
+
+    /**
+     * Create news
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/admin/news/create", name="admin_news_create")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -61,5 +82,90 @@ class AdminController extends Controller
         return $this->render('@News/Admin/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Change the news
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/admin/news/change/{id}", name="admin_news_change")
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function changeAction(Request $request, $id)
+    {
+        $repos = $this->getDoctrine()->getRepository(News::class);
+        $category = $repos->find($id);
+
+        if (is_null($category)) {
+            $this->addFlash(
+                'danger',
+                $this->get('translator')->trans('news.change.not_found', ['%id%' => $id])
+            );
+            return $this->redirectToRoute('admin_news');
+        }
+
+        $form = $this->createForm(NewsType::class, $category);
+        $form->remove('submit');
+        $form->add('submit', SubmitType::class, [
+            'label' => 'category.change.submit',
+            'attr' => ['class' => 'btn-primary'],
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('news.change.success', ['%id%' => $id])
+            );
+
+            return $this->redirectToRoute('admin_news');
+        }
+
+        return $this->render('@News/Admin/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Delete a news
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/admin/news/delete/{id}", name="admin_news_category_delete")
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $repos = $this->getDoctrine()->getRepository(News::class);
+        $news = $repos->find($id);
+
+        if (is_null($news)) {
+            $this->addFlash(
+                'danger',
+                $this->get('translator')->trans('news.change.not_found', ['%id%' => $id])
+            );
+            return $this->redirectToRoute('admin_news');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($news);
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            $this->get('translator')->trans('news.delete.success', ['%id%' => $id])
+        );
+
+        return $this->redirectToRoute('admin_news');
     }
 }
