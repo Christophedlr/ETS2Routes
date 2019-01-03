@@ -85,6 +85,12 @@ class News
     private $text;
 
 
+    public function __construct()
+    {
+        $this->publicationDate = date_create();
+        $this->changeDate = date_create();
+    }
+
     /**
      * Get id
      *
@@ -239,4 +245,3 @@ class News
         return $this->text;
     }
 }
-

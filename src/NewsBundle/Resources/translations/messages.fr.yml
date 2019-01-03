@@ -1,3 +1,9 @@
+news:
+    create:
+        title: "Création d'une news"
+        error: "Cette news existe déjà"
+        success: "La news a bien été ajoutée"
+
 category:
     create:
         title: "Création d'une catégorie"
